@@ -2,11 +2,16 @@ package com.example.arduinoandroidapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -69,6 +74,25 @@ public class ScreenMainActivity extends AppCompatActivity {
                 startActivity(new Intent(ScreenMainActivity.this, EmergencyCall.class));
             }
         });
+
+        new AlertDialog.Builder(this)
+                .setTitle("Warning")
+                .setMessage("Fall Detected!")
+
+                // Specifying a listener allows you to take an action before dismissing the dialog.
+                // The dialog is automatically dismissed when a dialog button is clicked.
+                .setPositiveButton("Call Emergency", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String number = "+972526586120".trim();
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", number, null));
+                        startActivity(intent);
+                    }
+                })
+
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton("Dismiss", null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void getUserDisplayName(final FirebaseUser currentUser){
